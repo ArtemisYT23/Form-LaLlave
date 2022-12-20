@@ -1,7 +1,7 @@
 {
   "name": "demoswc",
   "private": true,
-  "homepage": "http://artemis.github.io/lallave-form",
+  "homepage": "https://artemis.github.io/lallave-form",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

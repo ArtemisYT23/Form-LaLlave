@@ -16,6 +16,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Navigate to={RoutesForm.INITIAL} />} />
+              <Route path="*" element={<Navigate to={RoutesForm.INITIAL} />} />
               <Route path={RoutesForm.INITIAL} element={<InitialForm />} />
             </Routes>
           </BrowserRouter>
