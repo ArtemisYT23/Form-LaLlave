@@ -33,6 +33,10 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  @media screen and (max-width: 767px) {
+    display: flex;
+    padding: 0;
+  }
 `;
 
 const ContentLogo = styled.div`
@@ -40,16 +44,27 @@ const ContentLogo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 767px) {
+    width: 35%;
+  }
 `;
 
 const ContainerImg = styled.div`
   width: 80px;
   height: 80px;
+  @media screen and (max-width: 767px) {
+    width: 55px;
+    height: 55px;
+  }
 `;
 
 const ContainerImg2 = styled.div`
   width: 175px;
   height: 80px;
+  @media screen and (max-width: 767px) {
+    width: 105px;
+    height: 65px;
+  }
 `;
 
 const KeyContainer = styled.img`
@@ -63,4 +78,11 @@ const ContentText = styled.div`
   color: var(--secondColor);
   font-size: 2.5rem;
   margin-top: 1rem; 
+  @media screen and (max-width: 767px) {
+    font-size: 1.3rem;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: center;
+  }
 `;

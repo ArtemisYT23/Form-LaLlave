@@ -104,6 +104,12 @@ const ContainerFiles = styled.div`
   width: 100%;
   height: 1200px;
   display: flex;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const Content = styled.div`
@@ -113,6 +119,12 @@ const Content = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  @media screen and (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const ContainerData = styled.div`

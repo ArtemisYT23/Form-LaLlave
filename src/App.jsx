@@ -15,9 +15,8 @@ function App() {
         <Provider store={store()}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Navigate to={RoutesForm.INITIAL} />} />
-              <Route path="*" element={<Navigate to={RoutesForm.INITIAL} />} />
-              <Route path={RoutesForm.INITIAL} element={<InitialForm />} />
+              <Route path="/" element={<InitialForm />} />
+              <Route path="*" element={<InitialForm />} />
             </Routes>
           </BrowserRouter>
         </Provider>

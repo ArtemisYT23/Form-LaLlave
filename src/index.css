@@ -14,15 +14,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--primaryColor);
-  padding: 1rem;
+  background-color: var(--primaryColor); 
 }
+
+@media screen and (max-width: 767px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondColor);
+  }
+}
+
 
 input {
   border: none;
   border-bottom: 2px solid var(--PrimaryColor);
   width: 100%;
-  padding: 0.5rem 1rem;
 }
 
 label {
@@ -41,7 +49,6 @@ body::-webkit-scrollbar {
 
 body::-webkit-scrollbar-thumb {
   background-color: var(--thirdColor);
-  border-radius: 0.2rem;
 }
 
 body::-webkit-scrollbar-thumb:hover,

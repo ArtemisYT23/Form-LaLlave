@@ -39,9 +39,8 @@ const ContainerBody = styled.div`
 
 const Card = styled.div`
   background-color: #58852576;
-  width: 90%;
+  width: 95%;
   height: 250px;
-  margin: 0 1rem 0 0;
   border-radius: 13px;
   display: flex;
   flex-direction: column;
