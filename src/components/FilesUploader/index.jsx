@@ -1,98 +1,105 @@
 import styled from "styled-components";
 import { ContainerHeader } from "../../styles/Form/Form";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getEnablingData,
+  sendDataFormFile,
+} from "../../redux/states/FileEnabling";
+import { useNavigate } from "react-router-dom";
 
 const FilesUploader = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const requiredChart = "*";
+  const { files } = useSelector((store) => store);
+  const { FileType, FileEnabling, InfoCabinet, Route } = files;
+
+  useEffect(() => {
+    const Enabling = [];
+    FileType.map((file) => {
+      const Types = {
+        file: null,
+        fileTypeCode: file.code,
+        fileTypeName: file.name,
+        descriptionFront: file.name,
+        isRequired: file.isRequired,
+      };
+      Enabling.push(Types);
+    });
+    // console.log(Enabling);
+    dispatch(getEnablingData(Enabling));
+  }, [FileType]);
+
+  useEffect(() => {
+    Route != 200 ? <></> : navigate("SuccessForm")
+  },[Route])
+
+  const setFile = (e) => {
+    let id = e.target.id;
+    let file = e.target.files[0];
+
+    var reader = new FileReader();
+    if (file != "") {
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        fileCreated(reader.result, id);
+      };
+      reader.onerror = function (error) {
+        console.log("Error: ", error);
+      };
+    }
+  };
+
+  const fileCreated = (Enabling, id) => {
+    console.log(id);
+    console.log(Enabling);
+    FileEnabling.map((index, i) => {
+      if (index.fileTypeCode == id) {
+        index.file = Enabling;
+      }
+      return index;
+    });
+    console.log(FileEnabling);
+    dispatch(getEnablingData(FileEnabling));
+  };
+
+  const SendFilesData = () => {
+    const FormData = {
+      documnetCode: InfoCabinet?.documentCode,
+      fileData: FileEnabling,
+    };
+    dispatch(sendDataFormFile(FormData));
+  };
+
   return (
     <ContainerHeader>
       <ContainerFiles>
-        <Content>
-          <ContainerData>
-            <LabelTitle>Foto Frontal (1) {requiredChart}</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Curriculum Vitae (1) {requiredChart}</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Certificado de Educación (1) {requiredChart}</LabelTitle>
-            <LabelTitle>( Certificado de estudios)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Certificado de Trabajo (opcional)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Certificado o Acta de </LabelTitle>
-            <LabelTitle>Matrimonio (opcional)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Certificados De Partida de Nacimiento</LabelTitle>
-            <LabelTitle>De los hijos (opcional)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Certificados De Partida de Nacimiento</LabelTitle>
-            <LabelTitle>De los hijos (opcional)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Copia o screenshot de cuenta de</LabelTitle>
-            <LabelTitle> ahorros Banco Internacional (1) {requiredChart}</LabelTitle>
-            <LabelTitle>(o copia de planilla de servicios)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-        </Content>
-
-
-        <Content>
-          <ContainerData>
-            <LabelTitle>Cedula o DNI (1) {requiredChart}</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Certificado de votación (1) {requiredChart}</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Licencia de Conducir (opcional)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Carnet De discapacidad (opcional)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Copias de Certificados de</LabelTitle>
-            <LabelTitle>capacitación (opcional)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-          <ContainerData>
-            <LabelTitle>Formulario 107 En caso de haber laborado</LabelTitle>
-            <LabelTitle> en relación de dependencia (opcional)</LabelTitle>
-            <File type="file" />
-          </ContainerData>
-
-
-        </Content>
+        <ContentData>
+          {FileEnabling ? (
+            FileEnabling.map((file, i) => (
+              <ContainerData key={i}>
+                {file.isRequired ? (
+                  <LabelTitle>
+                    {file.fileTypeName} (1) {requiredChart}
+                  </LabelTitle>
+                ) : (
+                  <LabelTitle>{file.fileTypeName} (1) </LabelTitle>
+                )}
+                <File
+                  id={file.fileTypeCode}
+                  type="file"
+                  onInput={(e) => setFile(e)}
+                />
+              </ContainerData>
+            ))
+          ) : (
+            <></>
+          )}
+        </ContentData>
       </ContainerFiles>
       <ContainerButton>
-      <ButtonSubmit>ENVIAR</ButtonSubmit>
+        <ButtonSubmit onClick={() => SendFilesData()}>ENVIAR</ButtonSubmit>
       </ContainerButton>
     </ContainerHeader>
   );
@@ -104,6 +111,7 @@ const ContainerFiles = styled.div`
   width: 100%;
   height: 1200px;
   display: flex;
+  justify-content: center;
   @media screen and (max-width: 767px) {
     width: 100%;
     height: 100%;
@@ -112,18 +120,18 @@ const ContainerFiles = styled.div`
   }
 `;
 
-const Content = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+const ContentData = styled.div`
+  width: 80%;
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: 300px 300px;
   @media screen and (max-width: 767px) {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 1rem 0 1rem 0;
   }
 `;
 
@@ -132,7 +140,9 @@ const ContainerData = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem 0 1rem 0;
+  @media screen and (max-width: 767px) {
+    padding: 1.4rem;
+  }
 `;
 
 const LabelTitle = styled.label`

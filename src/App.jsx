@@ -5,8 +5,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import store from "./redux";
 import LoadingApp from "./utilities/LoadingApp";
 
-
 const InitialForm = lazy(() => import("./pages/InitialForm/InitialForm"));
+const SaveSucess = lazy(() => import("./pages/SaveSucess/SaveSucess"));
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
             <Routes>
               <Route path="/" element={<InitialForm />} />
               <Route path="*" element={<InitialForm />} />
+              <Route path="SuccessForm" element={<SaveSucess />} />
             </Routes>
           </BrowserRouter>
         </Provider>
