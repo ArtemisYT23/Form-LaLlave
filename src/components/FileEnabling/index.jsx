@@ -1,13 +1,23 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { ContainerHeader } from "../../styles/Form/Form";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Knob } from "primereact/knob";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
 const FileEnabling = () => {
-  const [value10, setValue10] = useState(0);
+  const dispatch = useDispatch();
+  const { files } = useSelector((store) => store);
+  const { SumFile, TotalFile } = files;
+
+  useEffect(() => {
+      setValue(SumFile);
+  }, [SumFile]);
+
+  const [value10, setValue] = useState(TotalFile);
 
   return (
     <ContainerHeader>
@@ -15,7 +25,7 @@ const FileEnabling = () => {
         <Card>
           <Knob
             value={value10}
-            valueTemplate={"{value}/14"}
+            valueTemplate={`{value}/${TotalFile}`}
             size={160}
             valueColor={"#588525"}
             readOnly
@@ -38,7 +48,7 @@ const ContainerBody = styled.div`
 `;
 
 const Card = styled.div`
-  background-color: #58852576;
+  background-color: #58852596;
   width: 95%;
   height: 250px;
   border-radius: 13px;

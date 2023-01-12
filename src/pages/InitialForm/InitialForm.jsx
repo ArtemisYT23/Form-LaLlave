@@ -1,33 +1,46 @@
 import { useSelector } from "react-redux";
+import LoadingApp from "../../utilities/LoadingApp";
 import Header from "../../components/Header";
 import InfoBody from "../../components/InfoBody";
 import InputCedula from "../../components/InputCedula";
 import FileEnabling from "../../components/FileEnabling";
 import FilesUploader from "../../components/FilesUploader";
 import Footer from "../../components/Footer";
+import FormExpired from "../../components/FormExpired";
+import FormInvalid from "../../components/FormInvalid";
 
 const InitialForm = () => {
   const { files } = useSelector((store) => store);
-  const { InfoCabinet } = files;
+  const { InfoCabinet, Validate, RouteCedulaValid, isLoadingSaveFile } = files;
 
   return (
     <>
-      <Header />
-
-      <InfoBody />
-
-      <InputCedula />
-
-      {InfoCabinet?.isActive ? (
-        <>
-          <FileEnabling />
-          <FilesUploader />
-        </>
+      {isLoadingSaveFile ? (
+        <LoadingApp />
       ) : (
-        <></>
-      )}
+        <>
+          <Header />
 
-      <Footer />
+          <InfoBody />
+
+          {RouteCedulaValid != 400 ? (
+            <>{Validate ? <InputCedula /> : <FormExpired />}</>
+          ) : (
+            <FormInvalid />
+          )}
+
+          {InfoCabinet?.isActive ? (
+            <>
+              <FileEnabling />
+              <FilesUploader />
+            </>
+          ) : (
+            <></>
+          )}
+
+          <Footer />
+        </>
+      )}
     </>
   );
 };

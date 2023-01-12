@@ -1,31 +1,44 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ContainerHeader } from "../../styles/Form/Form";
-import { getValidateUserByCedula } from "../../redux/states/FileEnabling";
+import {
+  getValidateUserByCedula,
+  clearEnablingDataFileType,
+} from "../../redux/states/FileEnabling";
+import { useNavigate } from "react-router-dom";
+import { RoutesForm } from "../../models/routes";
 
 const InputCedula = () => {
   const requiredChar = "*";
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { files } = useSelector((store) => store);
+  const { Validate } = files;
   const [cedula, setCedula] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    dispatch(clearEnablingDataFileType());
     cedula != "" ? dispatch(getValidateUserByCedula(cedula)) : <></>;
+    dispatch();
   };
 
   return (
     <ContainerHeader>
       <Container1Col>
         <LabelInput>CEDULA DE IDENTIDAD{requiredChar}</LabelInput>
-        <Form onSubmit={handleSubmit}>
-          <Input
-            value={cedula}
-            type="text"
-            maxLength={10}
-            onChange={(e) => setCedula(e.target.value)}
-          />
-        </Form>
+        <Input
+          value={cedula}
+          type="text"
+          maxLength={10}
+          onChange={(e) => setCedula(e.target.value)}
+        />
+        <br />
+        {cedula != "" ? (
+          <ButtonReturn onClick={handleSubmit}>Validar</ButtonReturn>
+        ) : (
+          <></>
+        )}
       </Container1Col>
     </ContainerHeader>
   );
@@ -53,15 +66,31 @@ const LabelInput = styled.label`
   height: 100%;
   width: 100%;
   text-align: center;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: 1.2rem;
   color: var(--primaryColor);
-  padding: .5rem;
+  padding: 0.5rem;
 `;
 
 const Input = styled.input`
   width: 90%;
   height: 2.2rem;
+  font-size: 1.2rem;
   background-color: #d0d5e8;
   color: var(--primaryColor);
   outline: none;
+  text-align: center;
+`;
+
+const ButtonReturn = styled.button`
+  width: 120px;
+  height: 2rem;
+  border-radius: 13px;
+  outline: none;
+  border: none;
+  color: #fff;
+  background-color: var(--primaryColor);
+  cursor: pointer;
+  :hover {
+    background-color: #236591;
+  }
 `;

@@ -1,3 +1,5 @@
 export const RoutesForm = {
-    INITIAL: 'initial'
+    INITIAL: 'initial',
+    SUCCESS: 'successForm',
+    EXPIRED: 'FormNotValidate'
 }

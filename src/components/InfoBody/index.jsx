@@ -8,17 +8,16 @@ const InfoBody = () => {
       <ContainerInfo>
         <ContentLine>
           <Introducction>
-            El presente formulario permite el ingreso de datos personales para los colaboradores de la <strong>llave</strong>
+            Esta plataforma fue diseñada para los colaboradores de{" "}
+            <strong>LA LLAVE</strong> y permitirá registrar o subir sus archivos
+            de documentos personales. Recuerde subir toda la información que el
+            sistema le solicita de tal manera, que en el proceso no existan
+            errores y se cumpla exitosamente.{" "} Por registro y control interno los
+            documentos legales tienen un tiempo de caducidad,
             <strong>
               {" "}
-              es importante llenar toda la información para que su proceso y información
-              pueda guardarse inmediatamente y de forma correcta,{" "}
-            </strong>
-            por registro interno todos los instrumentos legales tendrán un
-            tiempo de caducidad
-            <strong>
-              {" "}
-              por lo que es necesario que una vez abierto este enlace sea llenado en las 24 horas posterior.
+              es importante indicarle que una vez abierto este enlace tendrá una
+              vigencia de 24 horas.
             </strong>
           </Introducction>
           <AditionalInformation>

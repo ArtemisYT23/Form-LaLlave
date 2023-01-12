@@ -9,25 +9,28 @@ const SaveSucess = () => {
       <ContainerHeader>
         <ContainerForm1>
           <div className="Iam">
-            <p>Formulario Enviado Con Éxito</p>
+            <p>Formulario Enviado</p>
+            <p>Con Éxito</p>
             <b>
               <div className="innerIam">
-                SOMOS CENTRALFILE
+                LA LLAVE
                 <br />
-                Su Aliado en
+                Somos Especialistas
                 <br />
-                Soluciones Informáticas
+                Su Aliado en los
                 <br />
-                Digitalización
+                Sectores
                 <br />
-                MailRoom
+                Industriales
               </div>
             </b>
           </div>
         </ContainerForm1>
       </ContainerHeader>
-      <br />
-      <ContainerForm imgUrl={fondo}></ContainerForm>
+
+      <ContentImg>
+        <ContainerForm imgUrl={fondo}></ContainerForm>
+      </ContentImg>
     </>
   );
 };
@@ -50,9 +53,23 @@ const ContainerHeader = styled.div`
 
 const ContainerForm1 = styled.div`
   width: 100%;
-  height: 220px;
+  height: 280px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
+const ContentImg = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 767px) {
+    overflow: hidden;
+    flex-direction: column;
+  }
 `;
 
 const ContainerForm = styled.div`
@@ -63,4 +80,12 @@ const ContainerForm = styled.div`
   background-size: contain;
   background: url(${(props) => props.imgUrl});
   border-radius: 13px;
+
+  @media screen and (max-width: 767px) {
+    width: 600px;
+    height: 400px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 25%;
+  }
 `;

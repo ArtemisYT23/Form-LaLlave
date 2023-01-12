@@ -5,15 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getEnablingData,
   sendDataFormFile,
+  lengthTotalEnablingFile,
+  SumEnablingFile,
+  ResEnablingFile,
+  setSpinnerFileDataSubmit,
 } from "../../redux/states/FileEnabling";
 import { useNavigate } from "react-router-dom";
+import JSZip from "jszip";
+import toast, { Toaster } from "react-hot-toast";
 
 const FilesUploader = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const requiredChart = "*";
   const { files } = useSelector((store) => store);
-  const { FileType, FileEnabling, InfoCabinet, Route } = files;
+  const { FileType, FileEnabling, InfoCabinet, Route, TotalFile } = files;
+  const [isFalse, setIsFalse] = useState(true);
+  const [isTrue, setIsTrue] = useState(false);
 
   useEffect(() => {
     const Enabling = [];
@@ -29,42 +37,84 @@ const FilesUploader = () => {
     });
     // console.log(Enabling);
     dispatch(getEnablingData(Enabling));
+    dispatch(lengthTotalEnablingFile(Enabling.length));
   }, [FileType]);
 
   useEffect(() => {
-    Route != 200 ? <></> : navigate("SuccessForm")
-  },[Route])
+    Route != 200 ? <></> : navigate("SuccessForm");
+  }, [Route]);
 
   const setFile = (e) => {
+    const zip = new JSZip();
     let id = e.target.id;
-    let file = e.target.files[0];
+    let files = Array.from(e.target.files);
+    // console.log(files);
+    if (files == undefined) {
+      dispatch(ResEnablingFile());
+    }
+    files.forEach((file) => {
+      zip.file(file.name, file, { binary: true });
+    });
 
-    var reader = new FileReader();
-    if (file != "") {
-      reader.readAsDataURL(file);
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      // window.location.href = "data:application/zip;base64," + content;
+      var reader = new FileReader();
+      reader.readAsDataURL(content);
       reader.onload = function () {
         fileCreated(reader.result, id);
+        // console.log(reader.result);
       };
       reader.onerror = function (error) {
         console.log("Error: ", error);
+        dispatch(ResEnablingFile());
       };
-    }
+    });
   };
 
   const fileCreated = (Enabling, id) => {
-    console.log(id);
-    console.log(Enabling);
     FileEnabling.map((index, i) => {
       if (index.fileTypeCode == id) {
         index.file = Enabling;
       }
       return index;
     });
-    console.log(FileEnabling);
     dispatch(getEnablingData(FileEnabling));
+    dispatch(SumEnablingFile());
+  };
+
+  const ValidateError = () => {
+    // if (FileType.length === TotalFile) {
+    //   FileEnabling.forEach((file, i) => {
+    //     if (file.isRequired == true && file.file != null) {
+    //       setIsTrue(true);
+    //       setIsFalse(false);
+    //     }
+    //   });
+    // }
+    const TotalFileType = [];
+    FileType.forEach((file, i) => {
+      if (file.isRequired == true) {
+        TotalFileType.push(file);
+      }
+    });
+    const EnablingFileType = [];
+    FileEnabling.forEach((file, i) => {
+      if (file.isRequired == true && file.file != null) {
+        EnablingFileType.push(file);
+      }
+    });
+
+    if (TotalFileType.length == EnablingFileType.length) {
+      setIsTrue(true);
+      setIsFalse(false);
+    }
+    if (TotalFileType.length != EnablingFileType.length) {
+      toast.error("Archivos Requeridos Faltantes");
+    }
   };
 
   const SendFilesData = () => {
+    dispatch(setSpinnerFileDataSubmit(true));
     const FormData = {
       documnetCode: InfoCabinet?.documentCode,
       fileData: FileEnabling,
@@ -89,7 +139,8 @@ const FilesUploader = () => {
                 <File
                   id={file.fileTypeCode}
                   type="file"
-                  onInput={(e) => setFile(e)}
+                  onChange={(e) => setFile(e)}
+                  multiple
                 />
               </ContainerData>
             ))
@@ -98,9 +149,30 @@ const FilesUploader = () => {
           )}
         </ContentData>
       </ContainerFiles>
+
       <ContainerButton>
-        <ButtonSubmit onClick={() => SendFilesData()}>ENVIAR</ButtonSubmit>
+        {isFalse ? (
+          <ButtonValidate onClick={() => ValidateError()}>VALIDAR</ButtonValidate>
+        ) : (
+          <></>
+        )}
+        {isTrue ? (
+          <ButtonSubmit onClick={() => SendFilesData()}>ENVIAR</ButtonSubmit>
+        ) : (
+          <></>
+        )}
       </ContainerButton>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          className: "",
+          duration: 3500,
+          style: {
+            background: "#588525",
+            color: "#fff",
+          },
+        }}
+      />
     </ContainerHeader>
   );
 };
@@ -188,7 +260,7 @@ const ContainerButton = styled.div`
   padding: 1rem;
 `;
 
-const ButtonSubmit = styled.button`
+const ButtonValidate = styled.button`
   border: none;
   background-color: var(--secondColor);
   color: white;
@@ -197,3 +269,14 @@ const ButtonSubmit = styled.button`
   height: 40px;
   cursor: pointer;
 `;
+
+const ButtonSubmit = styled.button`
+  border: none;
+  background-color: var(--primaryColor);
+  color: white;
+  border-radius: 8px;
+  width: 90%;
+  height: 40px;
+  cursor: pointer;
+`;
+
