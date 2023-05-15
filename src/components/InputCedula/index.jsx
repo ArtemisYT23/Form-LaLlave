@@ -20,7 +20,6 @@ const InputCedula = () => {
   const handleSubmit = () => {
     dispatch(clearEnablingDataFileType());
     cedula != "" ? dispatch(getValidateUserByCedula(cedula)) : <></>;
-    dispatch();
   };
 
   return (

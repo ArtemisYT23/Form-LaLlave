@@ -22,6 +22,7 @@ const FilesUploader = () => {
   const { FileType, FileEnabling, InfoCabinet, Route, TotalFile } = files;
   const [isFalse, setIsFalse] = useState(true);
   const [isTrue, setIsTrue] = useState(false);
+  const [FileOrderData, setFileOrderData] = useState([]);
 
   useEffect(() => {
     const Enabling = [];
@@ -43,6 +44,23 @@ const FilesUploader = () => {
   useEffect(() => {
     Route != 200 ? <></> : navigate("SuccessForm");
   }, [Route]);
+
+  useEffect(() => {
+    function orderArray(a, b) {
+      if (a.isRequired && !b.isRequired) {
+        return -1;
+      }
+
+      if (!a.isRequired && b.isRequired) {
+        return 1;
+      }
+
+      return 0;
+    }
+
+    const FileOrder = FileEnabling.sort(orderArray);
+    setFileOrderData(FileOrder);
+  }, [FileEnabling]);
 
   const setFile = (e) => {
     const zip = new JSZip();
@@ -83,14 +101,6 @@ const FilesUploader = () => {
   };
 
   const ValidateError = () => {
-    // if (FileType.length === TotalFile) {
-    //   FileEnabling.forEach((file, i) => {
-    //     if (file.isRequired == true && file.file != null) {
-    //       setIsTrue(true);
-    //       setIsFalse(false);
-    //     }
-    //   });
-    // }
     const TotalFileType = [];
     FileType.forEach((file, i) => {
       if (file.isRequired == true) {
@@ -126,8 +136,8 @@ const FilesUploader = () => {
     <ContainerHeader>
       <ContainerFiles>
         <ContentData>
-          {FileEnabling ? (
-            FileEnabling.map((file, i) => (
+          {FileOrderData ? (
+            FileOrderData.map((file, i) => (
               <ContainerData key={i}>
                 {file.isRequired ? (
                   <LabelTitle>
@@ -152,7 +162,9 @@ const FilesUploader = () => {
 
       <ContainerButton>
         {isFalse ? (
-          <ButtonValidate onClick={() => ValidateError()}>VALIDAR</ButtonValidate>
+          <ButtonValidate onClick={() => ValidateError()}>
+            VALIDAR
+          </ButtonValidate>
         ) : (
           <></>
         )}
@@ -279,4 +291,3 @@ const ButtonSubmit = styled.button`
   height: 40px;
   cursor: pointer;
 `;
-

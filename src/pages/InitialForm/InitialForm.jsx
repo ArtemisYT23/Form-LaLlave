@@ -8,6 +8,7 @@ import FilesUploader from "../../components/FilesUploader";
 import Footer from "../../components/Footer";
 import FormExpired from "../../components/FormExpired";
 import FormInvalid from "../../components/FormInvalid";
+import NameInfo from "../../components/NameInfo";
 
 const InitialForm = () => {
   const { files } = useSelector((store) => store);
@@ -27,6 +28,14 @@ const InitialForm = () => {
             <>{Validate ? <InputCedula /> : <FormExpired />}</>
           ) : (
             <FormInvalid />
+          )}
+
+          {InfoCabinet?.entityName ? (
+            <>
+              <NameInfo />
+            </>
+          ) : (
+            <></>
           )}
 
           {InfoCabinet?.isActive ? (

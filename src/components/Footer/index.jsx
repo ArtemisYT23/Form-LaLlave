@@ -11,12 +11,17 @@ const Footer = () => {
           <ContentImg>
             <img src={logoGris} alt="cargando" />
           </ContentImg>
-          <br />
           <ContainerText>
-            <p>Guayaquil – Guayas: Av. Juan Tanca Marengo, Km. 2.5 Quito</p>
-            <p>Pichincha: Av. Amazonas n44-153 entre Av. el Inca y Río Coca</p>
-            <p>Correo: info@la-llave.com</p>
-            <p>Teléfonos: Guayaquil (04) 259-6900 – Quito (02) 394-9400</p>
+            <p>Ecuador</p>
+            <p>Guayaquil: Av. Juan Tanca Marengo, Km. 2.5</p>
+            <p>Quito: Av. Amazonas n44-153 entre Av. el Inca y Río Coca</p>
+            <p>Correo: mvelasquez@la-llave.com</p>
+            <p>Perú</p>
+            <p>Av. Juan de Arona 151 Oficina 505 san isidro. </p>
+            <p>Correo: staipe@lallave.com.pe o ebarona@lallave.com.pe</p>
+            <p> Bolivia:</p>
+             <p>Av. Ramblas y 4to Anillo, Edificio El Cubo I Piso # 2 (Equipetrol)</p>
+             <p>Correo: staipe@lallave.com.pe o ebarona@lallave.com.pe</p>
           </ContainerText>
         </ContainerFirst>
         <ContainerSecond>
@@ -33,7 +38,7 @@ export default Footer;
 
 const ContainerFooter = styled.div`
   width: 100%;
-  height: 170px;
+  height: 300px;
   display: flex;
   background-color: #588525;
   border-radius: 13px;
@@ -90,11 +95,11 @@ const ContainerText = styled.div`
   align-items: center;
   text-align: justify;
   color: #c4c4c4;
-  line-height: 1.4;
+  line-height: 1.5;
   @media screen and (max-width: 767px) {
     width: 300px;
     line-height: 1;
-    padding: 1rem 0 1rem 0 ;
+    padding: 1rem 0 1rem 0;
     text-align: center;
   }
 `;
